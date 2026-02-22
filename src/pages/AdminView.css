@@ -1,0 +1,23 @@
+.admin-layout {
+    display: grid;
+    grid-template-columns: 1fr 450px;
+    gap: 2rem;
+    height: calc(100vh - 100px);
+}
+
+.admin-list-area {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.admin-form-area {
+    height: 100%;
+}
+
+@media (max-width: 992px) {
+    .admin-layout {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+}

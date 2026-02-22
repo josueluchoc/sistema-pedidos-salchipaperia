@@ -1,0 +1,97 @@
+.cocina-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    height: calc(100vh - 100px);
+}
+
+.cocina-header {
+    display: flex;
+    flex-shrink: 0;
+}
+
+.cocina-tabs {
+    display: flex;
+    padding: 0.5rem;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.cocina-tab {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 1.05rem;
+    transition: var(--transition);
+    text-align: center;
+}
+
+.cocina-tab:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+}
+
+.cocina-tab.active-tab {
+    background: rgba(245, 158, 11, 0.2);
+    /* Warning tint */
+    color: #fbbf24;
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.2);
+}
+
+.cocina-tab.completed-tab {
+    background: rgba(16, 185, 129, 0.2);
+    /* Success tint */
+    color: #34d399;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
+}
+
+.cocina-tab.deleted-tab {
+    background: rgba(239, 68, 68, 0.2);
+    /* Danger tint */
+    color: #f87171;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+}
+
+.cocina-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    overflow-y: auto;
+    align-items: stretch;
+    padding-right: 0.5rem;
+}
+
+/* Custom scroll */
+.cocina-grid::-webkit-scrollbar {
+    width: 6px;
+}
+
+.cocina-grid::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+
+.cocina-empty {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: var(--radius-lg);
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.empty-emoji {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.empty-text {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+}
