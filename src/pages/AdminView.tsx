@@ -78,19 +78,21 @@ export const AdminView: React.FC = () => {
         <div className="admin-layout">
             {/* Left Area: Product List */}
             <div className="admin-list-area">
-                <div className="flex justify-between items-center mb-6">
+                <div className="flex justify-between items-center mb-6" style={{ paddingBottom: '1rem' }}>
                     <h2 className="text-2xl font-bold">Gestión de Productos</h2>
-                    <Button variant="primary" icon={PlusCircle} onClick={handleAddNew}>
-                        Nuevo Producto
-                    </Button>
+                    <div style={{ position: 'fixed', bottom: '2rem', right: '2rem', zIndex: 100 }}>
+                        <Button variant="primary" icon={PlusCircle} onClick={handleAddNew} style={{ borderRadius: '999px', boxShadow: '0 10px 25px -5px rgba(139, 92, 246, 0.5)', padding: '0.75rem 1.5rem' }}>
+                            Nuevo Producto
+                        </Button>
+                    </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 custom-scroll overflow-y-auto">
                     {products.map(product => (
                         <GlassCard key={product.id} className="p-4 flex gap-4" hoverEffect>
-                            <div className="w-20 h-20 flex-shrink-0 bg-white/5 rounded-lg overflow-hidden flex items-center justify-center">
+                            <div style={{ width: '80px', height: '80px', flexShrink: 0, borderRadius: '8px', overflow: 'hidden', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                 {product.image_url ? (
-                                    <img src={product.image_url} alt={product.name} className="w-full h-full object-cover" />
+                                    <img src={product.image_url} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                 ) : (
                                     <span className="text-3xl opacity-50">🍔</span>
                                 )}
@@ -120,6 +122,7 @@ export const AdminView: React.FC = () => {
             <div className="admin-form-area">
                 {isEditing ? (
                     <ProductForm
+                        key={currentProduct?.id || 'new-product'}
                         initialData={currentProduct}
                         onSubmit={handleSubmit}
                         onCancel={() => setIsEditing(false)}
