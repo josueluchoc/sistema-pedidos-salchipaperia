@@ -25,7 +25,7 @@ export const CajaView: React.FC = () => {
 
     const handleAddProduct = (product: Product) => {
         setCartItems(prev => {
-            const existing = prev.find(item => item.product_id === product.id);
+            const existing = prev.find(item => item.product_id === product.id && product.category !== 'salchipapas');
             if (existing) {
                 return prev.map(item =>
                     item.product_id === product.id

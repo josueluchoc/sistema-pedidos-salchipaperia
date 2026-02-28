@@ -1,16 +1,27 @@
-import React, { useState } from 'react';
-import { MOCK_PRODUCTS } from '../services/mockData';
+import React, { useState, useEffect } from 'react';
 import type { Product } from '../types';
 import { GlassCard } from '../components/ui/GlassCard';
 import { Button } from '../components/ui/Button';
 import { ProductForm } from '../components/admin/ProductForm';
 import { PlusCircle, Edit2, Trash2 } from 'lucide-react';
+import { supabase } from '../services/supabase';
+import toast from 'react-hot-toast';
 import './AdminView.css';
 
 export const AdminView: React.FC = () => {
-    const [products, setProducts] = useState<Product[]>(MOCK_PRODUCTS);
+    const [products, setProducts] = useState<Product[]>([]);
     const [isEditing, setIsEditing] = useState(false);
     const [currentProduct, setCurrentProduct] = useState<Product | undefined>(undefined);
+
+    const fetchProducts = async () => {
+        const { data, error } = await supabase.from('products').select('*');
+        if (data) setProducts(data);
+        if (error) toast.error('Error cargando productos');
+    };
+
+    useEffect(() => {
+        fetchProducts();
+    }, []);
 
     const handleAddNew = () => {
         setCurrentProduct(undefined);
@@ -22,24 +33,43 @@ export const AdminView: React.FC = () => {
         setIsEditing(true);
     };
 
-    const handleDelete = (id: string) => {
+    const handleDelete = async (id: string) => {
         if (window.confirm('¿Seguro que deseas eliminar este producto?')) {
-            setProducts(prev => prev.filter(p => p.id !== id));
+            const toastId = toast.loading('Eliminando...');
+            const { error } = await supabase.from('products').delete().eq('id', id);
+            if (!error) {
+                setProducts(prev => prev.filter(p => p.id !== id));
+                toast.success('Producto eliminado', { id: toastId });
+            } else {
+                toast.error('Garantiza que no haya pedidos con este producto', { id: toastId });
+            }
         }
     };
 
-    const handleSubmit = (data: Partial<Product>) => {
+    const handleSubmit = async (data: Partial<Product>) => {
+        const toastId = toast.loading('Guardando...');
         if (data.id) {
             // Edit
-            setProducts(prev => prev.map(p => p.id === data.id ? { ...p, ...data } as Product : p));
+            const { error } = await supabase.from('products').update(data).eq('id', data.id);
+            if (!error) {
+                setProducts(prev => prev.map(p => p.id === data.id ? { ...p, ...data } as Product : p));
+                toast.success('Producto actualizado', { id: toastId });
+            } else {
+                toast.error('Error actualizando', { id: toastId });
+            }
         } else {
             // Add new
-            const newProduct: Product = {
-                ...(data as Product),
-                id: crypto.randomUUID(),
-                created_at: new Date().toISOString(),
+            const newProduct = {
+                ...data,
+                created_at: new Date().toISOString()
             };
-            setProducts(prev => [...prev, newProduct]);
+            const { data: inserted, error } = await supabase.from('products').insert(newProduct).select().single();
+            if (!error && inserted) {
+                setProducts(prev => [...prev, inserted]);
+                toast.success('Producto creado', { id: toastId });
+            } else {
+                toast.error('Error creando el producto', { id: toastId });
+            }
         }
         setIsEditing(false);
     };
