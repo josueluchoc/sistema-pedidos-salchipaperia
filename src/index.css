@@ -42,16 +42,14 @@
   box-sizing: border-box;
 }
 
-html {
-  overflow-x: hidden;
-}
+
 
 body {
   font-family: 'Outfit', sans-serif;
   background-color: var(--bg-dark);
   color: var(--text-main);
   min-height: 100vh;
-  overflow-x: hidden;
+  /* overflow-x: hidden removed */
   -webkit-font-smoothing: antialiased;
 }
 
@@ -60,7 +58,7 @@ body {
   min-height: 100vh;
   background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
   position: relative;
-  overflow-x: hidden;
+  /* overflow-x: hidden removed */
 }
 
 /* Animated decorative glowing orbs */
@@ -75,7 +73,7 @@ body {
   z-index: 0;
   opacity: 0.5;
   pointer-events: none;
-  animation: float 15s infinite ease-in-out;
+  /* Removed animation to prevent mobile rubber-banding effect */
 }
 
 .app-background::before {
